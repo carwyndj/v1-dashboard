@@ -43,8 +43,8 @@ $(document).ready(function () {
 
             // Set chart options
             var options = {
-                //'width':500,
-                //           'height':380,
+                        //'width':500,
+                        //'height':380,
                            'backgroundColor': '#2a2a2a',
                            legend:{position: 'top', textStyle: {color: 'white', fontSize: 10}}};
 
