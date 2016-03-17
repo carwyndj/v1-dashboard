@@ -1,0 +1,23 @@
+doctype
+html
+    head
+        title= title
+        script(src="https://www.gstatic.com/charts/loader.js")
+        script(src='/js/jquery-2.2.1.min.js')
+        script(src='/js/page.js')
+        link(href='css/page.css', rel='stylesheet', type='text/css')
+    body
+        .content
+            .header
+                h1= title
+
+            .main-content
+                block content
+            .main-table
+                block table-content
+            .main-chart
+                block chart-content
+
+            .footer
+                h2 Nagra Media Player
+        
