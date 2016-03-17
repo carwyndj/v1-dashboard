@@ -42,10 +42,11 @@ $(document).ready(function () {
             data.addRows(charData);
 
             // Set chart options
-            var options = {'width':500,
-                           'height':400,
+            var options = {
+                        //'width':500,
+                        //'height':380,
                            'backgroundColor': '#2a2a2a',
-                           legend:{position: 'top', textStyle: {color: 'white', fontSize: 10}}}
+                           legend:{position: 'top', textStyle: {color: 'white', fontSize: 10}}};
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart($('.main-chart').get(0));
@@ -53,6 +54,77 @@ $(document).ready(function () {
             drawTable(result);
             chart.draw(data, options);
         });
-    }
+        
+        $.getJSON("http://localhost:5000/defects/history", function(results){
+            console.log("Got historical Data...[results:" + results.length + "]");
+            var charData = [];
+            charData.push(['Date', 'iOS', 'Android', 'Desktop', 'PPC', 'No Team']);
+            
+            
+            for(var i=0; i<results.length; i++){
+                console.log("Date:" + results[i].entryDate);
+                var date = new Date(results[i].entryDate);
+                var row = [];
+                var teamDefects = results[i].teamDefects;
+                row[0] = (date.getMonth() + 1) + "-" + date.getDate();
+//                console.log(row[0]);
+//                console.log("teamDefects length:" + teamDefects.length);
+                for(var j=0; j<teamDefects.length; j++){
+                    var team = teamDefects[j].team;
+                    var num_defect = teamDefects[j].num_defect;
+//                    console.log("team:" + team + "no. defect:" + num_defect);
+                    switch (team){
+                        case "iOS":
+                            row[1] = num_defect;
+                            break;
+                        case "Android": 
+                            row[2] = num_defect;
+                            break;
+                        case "Desktop":
+                            row[3] = num_defect;
+                            break;
+                        case "PPC": 
+                            row[4] = num_defect;
+                            break;
+                        case "No Team":
+                            row[5] = num_defect;
+                            break;
+                    }
+                }
+                charData.push(row);
+            }
+            console.log(charData);
+            
+            var data = google.visualization.arrayToDataTable(charData);
 
+            var options = {
+//              title: '30 Day Defect Trend',
+                curveType: 'line',
+                backgroundColor: '#2a2a2a',
+                legend: { 
+                    position: 'top', 
+                    textStyle: {
+                        color: 'white', 
+                        fontSize: 10
+                    }
+                },
+                vAxis: {
+                    title: "No. Defects",
+                    titleTextStyle: { color: 'white', fontsize:10},
+                    textStyle: {
+                        color: 'white', 
+                        fontSize:10} 
+                },
+                hAxis: { 
+                    title: "Date",
+                    titleTextStyle: { color: 'white', fontsize:10},
+                    textStyle: {color: 'white', fontSize:10}
+                }
+            };
+
+            var chart = new google.visualization.LineChart($('.main-chart-hist').get(0));
+
+            chart.draw(data, options);
+        });
+    }
 });

@@ -15,7 +15,6 @@ var defectsSchema = new mongoose.Schema({
 var dbConnected = false;
 
 module.exports.init = function () {
-//    mongoose.set('debug', true);
     mongoose.connect('localhost:27017/v1-dashboard', function (error) {
         if (error) {
             console.log(error);
@@ -32,7 +31,7 @@ module.exports.init = function () {
         console.log("MongoDb Connected OK!!!!")
         dbConnected = true;
         initSchema();
-        add30DummyDataEntries();
+//        add30DummyDataEntries();
     });
     
 };
@@ -91,7 +90,7 @@ exports.getDefectStats = function(res){
     }  
 }
 
-exports.getHistoricalDefectStats = function(res){
+exports.getHistoricalDefectStats = function(response){
     if(dbConnected){
         var defectStats = mongoose.model('defectStats', defectsSchema);
         
@@ -100,8 +99,9 @@ exports.getHistoricalDefectStats = function(res){
             'teamDefects.team': 1,
             'teamDefects.num_defect': 1,
             _id: 0 // Only return the data needed and suppress the '_id' 
-        }).sort({entryDate: 1}).exec(function (arr,docs) {
+        }).sort({entryDate: 1}).limit(30).exec(function (arr,docs) {
             console.log(docs);
+            response.json(docs);
         });
     }
     else {
@@ -187,11 +187,11 @@ function add30DummyDataEntries(){
         
         var dummyName = "defects:201603" + pad(i+1);
         
-        dummyDate = new Date(16,03,i+1);
+        dummyDate = new Date(2016,02,i+1);
         
         var teamDefects = new defectStats({
             name: dummyName,
-            date: dummyDate,
+            entryDate: dummyDate,
             teamDefects: dummyDefects
         });
         

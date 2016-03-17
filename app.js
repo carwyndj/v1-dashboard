@@ -54,7 +54,9 @@ app.get('/chart', function (request, response) {
 
 app.get('/test/v1', v1.getDefects);
 
-app.get('/test/db', mdb.getHistoricalDefectStats);
+app.get('/defects/history', function(request,response){
+    mdb.getHistoricalDefectStats(response);
+});
 
 app.get('/defects', function (request, response) {
     if (response.statusCode == 200) {
