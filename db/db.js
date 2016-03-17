@@ -91,7 +91,7 @@ exports.getDefectStats = function(res){
     }  
 }
 
-exports.getHistoricalDefectStats = function(res){
+exports.getHistoricalDefectStats = function(response){
     if(dbConnected){
         var defectStats = mongoose.model('defectStats', defectsSchema);
         
@@ -102,6 +102,7 @@ exports.getHistoricalDefectStats = function(res){
             _id: 0 // Only return the data needed and suppress the '_id' 
         }).sort({entryDate: 1}).exec(function (arr,docs) {
             console.log(docs);
+            response.json(docs);
         });
     }
     else {
@@ -187,11 +188,11 @@ function add30DummyDataEntries(){
         
         var dummyName = "defects:201603" + pad(i+1);
         
-        dummyDate = new Date(16,03,i+1);
+        dummyDate = new Date(2016,02,i+1);
         
         var teamDefects = new defectStats({
             name: dummyName,
-            date: dummyDate,
+            entryDate: dummyDate,
             teamDefects: dummyDefects
         });
         
