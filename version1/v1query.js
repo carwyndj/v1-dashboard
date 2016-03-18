@@ -91,12 +91,10 @@ V1Query.prototype.makeRequest = function (requestData, v1Response) {
 }
 
 
-
 V1Query.prototype.retrieveActivePlanningLevel = function (art) {
     var d = new Date();
     var dateString = util.ISODateString(d);
     console.log(dateString);
-    //    console.log(this);
     var requestData = {
         'from': 'Scope',
         'select': ['Name', 'BeginDate', 'EndDate', 'Parent.Name'],

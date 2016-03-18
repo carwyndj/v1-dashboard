@@ -60,6 +60,5 @@ exports.getDefects = function (req, res) {
                        "Status.Name!='Accepted'"]
         }
     ];
-    console.log("V1.getDefects()....")
     v1.makeRequest(requestData, v1.setHandler(v1.handleDefectResponse, res));
 }

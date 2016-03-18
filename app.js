@@ -26,7 +26,7 @@ app.set('view engine', 'jade');
 
 app.set('views', __dirname + '/public/views');
 
-//v1.init();
+v1.init();
 mdb.init();
 
 app.get('/', function (req, res) {
@@ -48,11 +48,8 @@ app.get('/chart', function (request, response) {
         }]);
     } else {
         console.log(response.statusCode);
-        // console.log("Error: " + error + "Status Code:" + response.statusCode);
     }
 });
-
-app.get('/test/v1', v1.getDefects);
 
 app.get('/defects/history', function(request,response){
     mdb.getHistoricalDefectStats(response);
@@ -64,7 +61,6 @@ app.get('/defects', function (request, response) {
         mdb.getDefectStats(response);
     } else {
         console.log(response.statusCode);
-        // console.log("Error: " + error + "Status Code:" + response.statusCode);
     }
 });
 

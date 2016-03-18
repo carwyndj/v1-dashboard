@@ -22,12 +22,10 @@ module.exports.init = function () {
     });
         
     var db = mongoose.connection;
-    mongoose.set('debug', true);
+//    mongoose.set('debug', true);
     
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function() {
-        // we're connected!
-        //setupSchema();
         console.log("MongoDb Connected OK!!!!")
         dbConnected = true;
         initSchema();
@@ -109,9 +107,7 @@ exports.getHistoricalDefectStats = function(response){
     }  
 }
 
-function initSchema(){
-//    defectsSchema.index({date: 1});
-    
+function initSchema(){    
     defectsSchema.methods.showNumberOfDefects = function () {
         var message = "Collected on " + this.date + "[";
         for(var i=0; i<this.teamDefects.length; i++){
@@ -139,7 +135,7 @@ function addDefectStats(defects){
         var name = buildDocumentName("defects:");
         var teamDefects = new defectStats({
             name: name,
-            date: new Date(),
+            entryDate: new Date(),
             teamDefects: defects
         });
         
