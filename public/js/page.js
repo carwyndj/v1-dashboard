@@ -13,7 +13,7 @@ function drawRow(rowData) {
 
 function drawTableAndPieChart(){   
     console.log("Requesting json...");
-    $.getJSON("http://localhost:5000/defects", function(result){
+    $.getJSON("./defects", function(result){
 
         // Create the data table.
         var data = new google.visualization.DataTable();
@@ -82,7 +82,7 @@ function buildLineChartData(results, charData) {
 }
 
 function drawLineChart() {
-    $.getJSON("http://localhost:5000/defects/history", function(results){
+    $.getJSON("./defects/history", function(results){
         console.log("Got historical Data...[results:" + results.length + "]");
         var charData = [];
         
