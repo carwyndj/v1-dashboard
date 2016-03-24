@@ -43,7 +43,7 @@ exports.getEpics = function (req, res) {
 exports.getDefects = function (req, res) {
     var requestData = [{
             'from': 'Defect',
-            'select': ['Number', 'Name', 'Team.Name', 'Status.Name'],
+            'select': ['Number', 'Name', 'Team.Name', 'Status.Name', 'Priority.Name'],
             'where': {
                 'Scope.Name': v1.getPlanningLevel()
             },
@@ -52,7 +52,7 @@ exports.getDefects = function (req, res) {
         
         }, {
             'from': 'Defect',
-            'select': ['Number', 'Name', 'Team.Name', 'Status.Name'],
+            'select': ['Number', 'Name', 'Team.Name', 'Status.Name', 'Priority.Name'],
             'where': {
                 'Scope.Name': "Secure Player (ART)"
             },

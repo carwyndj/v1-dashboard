@@ -5,7 +5,10 @@ var mdb = require('../db/db');
 
 var DefectList = function (team) {
     this.team = team;
-    this.defects = [];
+    this.highPrioDefects = [];
+    this.medPrioDefects = [];
+    this.lowPrioDefects = [];
+    this.noPrioDefects = [];
 };
 
 var V1Query = function (url, auth) {
@@ -31,6 +34,7 @@ V1Query.prototype.handleEpicResponse = function (jsonArray, renderRes) {
     }
 };
 
+
 V1Query.prototype.handleDefectResponse = function (jsonArray, response) {
     var i, l;
     var DefectLists = {
@@ -48,11 +52,18 @@ V1Query.prototype.handleDefectResponse = function (jsonArray, response) {
         }
     }
 
+    var totalAndroidDefects = util.getTotalDefectsForTeam(DefectLists.android);
+    var totalIOSDefects = util.getTotalDefectsForTeam(DefectLists.ios);
+    var totalDesktopDefects = util.getTotalDefectsForTeam(DefectLists.desktop);
+    var totalPPCDefects = util.getTotalDefectsForTeam(DefectLists.ppc);    
+    var totalNoTeamDefects = util.getTotalDefectsForTeam(DefectLists.noteam);
+    
     var output = "Number defects [" +
-        " Android: " + DefectLists.android.defects.length +
-        " IOS: " + DefectLists.ios.defects.length +
-        " Desktop: " + DefectLists.desktop.defects.length +
-        " PPC: " + DefectLists.ppc.defects.length + "]";
+        " Android: " + totalAndroidDefects +
+        " IOS: " + totalIOSDefects +
+        " Desktop: " + totalDesktopDefects +
+        " PPC: " + totalPPCDefects +
+        " No Team: " + totalNoTeamDefects + "]";
     
     console.log(output);
     mdb.addDefectStats(DefectLists);

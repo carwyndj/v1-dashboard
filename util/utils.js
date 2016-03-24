@@ -40,35 +40,75 @@ module.exports.calcDelay = function (time) {
     }
 }
 
+function sortIntoPriority(highPrioDefects, mediumPrioDefects, lowPrioDefects, noPrioDefects, jsonDefect) {
+    switch (jsonDefect['Priority.Name']){
+        case "High":
+            highPrioDefects.push({
+                Number: jsonDefect['Number'],
+                Name: jsonDefect['Name']
+            });
+            break;
+        case "Medium": 
+            mediumPrioDefects.push({
+                Number: jsonDefect['Number'],
+                Name: jsonDefect['Name']
+            });
+            break;
+        case "Low":
+            lowPrioDefects.push({
+                Number: jsonDefect['Number'],
+                Name: jsonDefect['Name']
+            });
+            break;
+        default:
+            noPrioDefects.push({
+                Number: jsonDefect['Number'],
+                Name: jsonDefect['Name']
+            });
+    }
+}
+
 module.exports.sortIntoTeams = function (defectLists, jsonDefect) {    
     if (jsonDefect['Team.Name'] == "MS_NMP_iOS" ||
         jsonDefect['Team.Name'] == "MS_NMP_iOS_Integration") {
-        defectLists.ios.defects.push({
-            Number: jsonDefect['Number'],
-            Name: jsonDefect['Name'],
-        });
+        sortIntoPriority(defectLists.ios.highPrioDefects,
+                         defectLists.ios.medPrioDefects,
+                         defectLists.ios.lowPrioDefects,
+                         defectLists.ios.noPrioDefects,
+                         jsonDefect);
     } else if (jsonDefect['Team.Name'] == "MS_NMP_Android" ||
         jsonDefect['Team.Name'] == "MS_NMP_Android Integration") {
-        defectLists.android.defects.push({
-            Number: jsonDefect['Number'],
-            Name: jsonDefect['Name']
-        });
+        sortIntoPriority(defectLists.android.highPrioDefects,
+                         defectLists.android.medPrioDefects,
+                         defectLists.android.lowPrioDefects,
+                         defectLists.android.noPrioDefects,
+                         jsonDefect);
     } else if (jsonDefect["Team.Name"] == "MS_NMP_Desktop" ||
         jsonDefect["Team.Name"] == "MS_NMP_Desktop_Integration") {
-        defectLists.desktop.defects.push({
-            Number: jsonDefect["Number"],
-            Name: jsonDefect["Name"]
-        });
+        sortIntoPriority(defectLists.desktop.highPrioDefects,
+                         defectLists.desktop.medPrioDefects,
+                         defectLists.desktop.lowPrioDefects,
+                         defectLists.desktop.noPrioDefects,
+                         jsonDefect);
     } else if (jsonDefect["Team.Name"] == "MS_NMP_Portable_Component" ||
         jsonDefect["Team.Name"] == "MS_NMP_Portable_Component_Integration") {
-        defectLists.ppc.defects.push({
-            Number: jsonDefect["Number"],
-            Name: jsonDefect["Name"]
-        });
+        sortIntoPriority(defectLists.ppc.highPrioDefects,
+                         defectLists.ppc.medPrioDefects,
+                         defectLists.ppc.lowPrioDefects,
+                         defectLists.ppc.noPrioDefects,
+                         jsonDefect);
     } else {
-        defectLists.noteam.defects.push({
-            Number: jsonDefect["Number"],
-            Name: jsonDefect["Name"]
-        });
+        sortIntoPriority(defectLists.noteam.highPrioDefects,
+                         defectLists.noteam.medPrioDefects,
+                         defectLists.noteam.lowPrioDefects,
+                         defectLists.noteam.noPrioDefects,
+                         jsonDefect);
     }
 };
+
+module.exports.getTotalDefectsForTeam = function(arrays) {
+   return arrays.highPrioDefects.length +
+       arrays.medPrioDefects.length +
+       arrays.lowPrioDefects.length +
+       arrays.noPrioDefects.length;
+}

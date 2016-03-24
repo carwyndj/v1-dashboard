@@ -30,9 +30,10 @@ v1.init();
 mdb.init();
 
 app.get('/', function (req, res) {
+    var date = new Date
     res.render('page', {
         title: "V1 Defect Stats",
-        asof: "As of: " + Date(),
+        asof: "As of: " + date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate()
     });
 });
 

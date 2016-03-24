@@ -38,23 +38,23 @@ exports.addDefectStats = function (defectList) {
     var jsonData = [
         {
             team: 'iOS',
-            num_defect: defectList.ios.defects.length
+            num_defect: util.getTotalDefectsForTeam(defectList.ios)
         },
         {
             team: 'Android',
-            num_defect: defectList.android.defects.length
+            num_defect: util.getTotalDefectsForTeam(defectList.android)
         },
         {
             team: 'Desktop',
-            num_defect: defectList.desktop.defects.length
+            num_defect: util.getTotalDefectsForTeam(defectList.desktop)
         },
         {
             team: 'PPC',
-            num_defect: defectList.ppc.defects.length
+            num_defect: util.getTotalDefectsForTeam(defectList.ppc)
         },
         {
             team: 'No Team',
-            num_defect: defectList.noteam.defects.length
+            num_defect: util.getTotalDefectsForTeam(defectList.noteam)
         }
     ];
     addDefectStats(jsonData);
@@ -109,7 +109,7 @@ exports.getHistoricalDefectStats = function(response){
 
 function initSchema(){    
     defectsSchema.methods.showNumberOfDefects = function () {
-        var message = "Collected on " + this.date + "[";
+        var message = "Collected on " + this.entryDate + "[";
         for(var i=0; i<this.teamDefects.length; i++){
             message += " team:" + this.teamDefects[i].team + ", No. Defects:" + this.teamDefects[i].num_defect + "\n";
         }
